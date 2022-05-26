@@ -1,0 +1,21 @@
+.navbar-custom{
+    padding-top: 1.2% !important;
+    padding-bottom: 1.2% !important;
+}
+.me-auto {
+    margin-left: auto !important;
+    margin-right: auto!important;
+}
+.offcanvas-top{
+    height: 33vh !important;
+}
+.form-control{
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0px !important;
+}
+.form-control:focus{
+    box-shadow: none !important;
+    border-color: #ced4da !important;
+}
