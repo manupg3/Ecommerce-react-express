@@ -19,3 +19,12 @@
     box-shadow: none !important;
     border-color: #ced4da !important;
 }
+.nav-link{
+    display: flex !important;
+    color:initial !important;
+    padding: 0px !important;
+    margin-left: 20px !important;
+    font-weight: 500 !important;
+}
+
+

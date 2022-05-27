@@ -1,5 +1,8 @@
 import React from 'react'
 import Carousel from "react-bootstrap/Carousel"
+import Categories from '../components/categories'
+import ProductList from '../components/productList'
+import PromoProduct from '../components/promoProduct'
 
 const CarouselHome = () =>{
 
@@ -42,6 +45,14 @@ function HomePage() {
   return (
     <div>
         <CarouselHome/>
+        <div className='bg-white pl-8 pr-8'>
+        <Categories/> 
+        <ProductList/> 
+        <ProductList/> 
+        <div className='pr-8 pl-8'>
+        <PromoProduct/>
+        </div>
+        </div>
     </div>
   )
 }

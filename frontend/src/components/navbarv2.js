@@ -1,25 +1,13 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
+
 import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import FormControl from 'react-bootstrap/FormControl'
 import Form from 'react-bootstrap/Form'
+import { LinkContainer } from 'react-router-bootstrap'
+import Nav from 'react-bootstrap/Nav'
+
 const navigation = {
   categories: [
     {
@@ -138,8 +126,8 @@ const navigation = {
     },
   ],
   pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
+    { name: 'Store', to: '/store' },
+    { name: 'Contact', to: '/contact' },
   ],
 }
 
@@ -148,10 +136,15 @@ function classNames(...classes) {
 }
 
 export default function Navbarv2() {
-    const [show, setShow] = useState(false)
 
-    const handleCloseSearch = () => setShow(false)
-    const handleShow = () => setShow(true)
+    const [showSearch, setShowSearch] = useState(false)
+    const [showSideCart, setShowSideCart] = useState(false)
+    
+    const handleCloseSearch = () => setShowSearch(false)
+    const handleCloseSideCart = () => setShowSideCart(false)
+    const handleShowSearch = () => setShowSearch(true)
+    const handleShowSideCart = () => setShowSideCart(true)
+    
     const [close, setClose] = useState(false)
     const closeNav = () => setClose(true)
   const [open, setOpen] = useState(false)
@@ -196,8 +189,10 @@ export default function Navbarv2() {
                 </div>
 
                 {/* Links */}
+            
                 <Tab.Group as="div" className="mt-2">
                   <div className="border-b border-gray-200">
+                   
                     <Tab.List className="-mb-px flex px-4 space-x-8">
                       {navigation.categories.map((category) => (
                         <Tab
@@ -259,13 +254,16 @@ export default function Navbarv2() {
                 </Tab.Group>
 
                 <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                  {navigation.pages.map((page) => (
+                  {/* {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
                       <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
                         {page.name}
                       </a>
                     </div>
-                  ))}
+                  ))} */}
+                    <LinkContainer to="/">
+                    <Nav.Link  class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800 nav-link">Home</Nav.Link>
+                    </LinkContainer>
                 </div>
 
                 <div className="border-t border-gray-200 py-6 px-4 space-y-6">
@@ -318,6 +316,9 @@ export default function Navbarv2() {
               </div>
 
               {/* Flyout menus */}
+              <LinkContainer to="/">
+                       <Nav.Link >Home</Nav.Link>
+                    </LinkContainer>
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="h-full flex space-x-8">
                   {navigation.categories.map((category) => (
@@ -406,15 +407,20 @@ export default function Navbarv2() {
                     </Popover>
                   ))}
 
-                  {navigation.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))}
+                {navigation.pages.map((page) => (
+                    
+                    <LinkContainer key={page.name} to={page.to}>
+                    <Nav.Link  className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">{page.name}</Nav.Link>
+                    </LinkContainer>
+                    // <a
+                    //   key={page.name}
+                    //   href={page.href}
+                    //   className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                    // >
+                    //   {page.name}
+                    // </a>
+                  ))} 
+                      
                 </div>
               </Popover.Group>
 
@@ -433,15 +439,15 @@ export default function Navbarv2() {
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <button onClick={handleShow} className="p-2 text-gray-400 hover:text-gray-500">
+                  <button onClick={handleShowSearch} className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <SearchIcon className="w-6 h-6" aria-hidden="true" />
                   </button>
                 </div>
            {/* Search OffCanvas */}
-                <Offcanvas show={show} placement='top' className="offcanvas-search" onHide={handleCloseSearch}>
+                <Offcanvas show={showSearch} placement='top' className="offcanvas-search" onHide={handleCloseSearch}>
         <Offcanvas.Header closeButton className="pb-0">
-          <Offcanvas.Title className="ml-auto mr-auto pt-8 ">Search products</Offcanvas.Title>
+          <Offcanvas.Title className="ml-auto mr-auto pt-8 ">find what you're looking for</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
         <Form className="d-flex w-[60%] ml-auto mr-auto mt-2">
@@ -461,20 +467,29 @@ export default function Navbarv2() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 p-2 flex items-center">
+                  <button onClick={handleShowSideCart} className="group -m-2 p-2 flex items-center">
                     <ShoppingBagIcon
                       className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                  </button>
                 </div>
+         
               </div>
             </div>
           </div>
         </nav>
       </header>
+      <Offcanvas show={showSideCart} placement='end' className="" onHide={handleCloseSideCart}>
+        <Offcanvas.Header closeButton className="pb-0">
+          <Offcanvas.Title className=" ">Your Order</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+           
+        </Offcanvas.Body>
+      </Offcanvas>
     </div>
   )
 }
