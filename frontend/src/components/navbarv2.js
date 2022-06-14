@@ -136,20 +136,27 @@ function classNames(...classes) {
 }
 
 export default function Navbarv2() {
+ const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
 
-    const [showSearch, setShowSearch] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
     const [showSideCart, setShowSideCart] = useState(false)
-    
+    const [sidebarCartItems, setSidebarCart] = useState(sideCartArray)
     const handleCloseSearch = () => setShowSearch(false)
     const handleCloseSideCart = () => setShowSideCart(false)
     const handleShowSearch = () => setShowSearch(true)
-    const handleShowSideCart = () => setShowSideCart(true)
-    
     const [close, setClose] = useState(false)
     const closeNav = () => setClose(true)
-  const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false)
 
-  return (
+    const handleShowSideCart = () => {
+    //getItemsSidebarCart()
+       console.log("SIDECART ITEMS",sidebarCartItems)
+       setShowSideCart(true)
+
+     }    
+    
+  
+   return (
     <div className="bg-white">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
@@ -484,10 +491,38 @@ export default function Navbarv2() {
       </header>
       <Offcanvas show={showSideCart} placement='end' className="" onHide={handleCloseSideCart}>
         <Offcanvas.Header closeButton className="pb-0">
-          <Offcanvas.Title className=" ">Your Order</Offcanvas.Title>
+          <Offcanvas.Title className=" ">Tu Pedido</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-           
+       {sideCartArray.map((product) => (
+          <div 
+          className=' mb-4 pt-2 hover:shadow-lg rounded-md shadow-md'
+          key={product.name}
+          > 
+          <div className='flex'>
+            <div>
+          <img className='mr-4' width={50} height={50} src={product.imageSrc} />        
+          </div>
+            <div>
+            <div className='pt-2 font-semibold'>
+            <h2>
+             {product.name}
+           </h2>
+           </div> 
+           <div className='pt-0 font-bold'>
+            <p>
+             ${product.price}
+           </p>
+           </div>
+            </div>
+            <div className='fixed right-[40px]'>
+              close
+            </div>
+            </div>
+
+              </div>
+
+        ))}  
         </Offcanvas.Body>
       </Offcanvas>
     </div>

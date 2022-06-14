@@ -1,7 +1,6 @@
 import { Transition } from "@headlessui/react";
 import { motion } from "framer-motion"
 import ButtonAddToCart from "./buttonAddToCart";
-
 const products = [
     {
       id: 1,
@@ -54,7 +53,7 @@ const products = [
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (
               <div key={product.id} className=" relative shadow-md hover:shadow-xl rounded-md p-4 pb-4">
-              <a href="#">
+              <div >
                 <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden  lg:h-80 lg:aspect-none">
                   <img
                     src={product.imageSrc}
@@ -82,7 +81,7 @@ const products = [
               <ButtonAddToCart product={product} classStyles={classStyles}/>
               </div>
                </div>
-               </a>
+               </div>
               </div>
               
             ))}
