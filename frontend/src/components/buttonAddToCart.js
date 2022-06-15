@@ -42,6 +42,14 @@ const ButtonAddToCart = ({product, classStyles})=> {
 
     arrayProductsAdd.push(product)
     localStorage.setItem('sideCart', JSON.stringify(arrayProductsAdd))
+    const subtotalCart = arrayProductsAdd.reduce((acc,product) =>{
+      const {price} = product
+      acc.subtotal += Number(price)
+        return acc
+    },{
+      subtotal:0
+    })
+    localStorage.setItem('subtotalCart', JSON.stringify(subtotalCart))
 
   }
 

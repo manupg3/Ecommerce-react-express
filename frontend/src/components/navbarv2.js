@@ -1,12 +1,15 @@
 
 import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
-import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
+import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon,TrashIcon } from '@heroicons/react/outline'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import FormControl from 'react-bootstrap/FormControl'
 import Form from 'react-bootstrap/Form'
 import { LinkContainer } from 'react-router-bootstrap'
 import Nav from 'react-bootstrap/Nav'
+import { motion } from "framer-motion";
+
+
 
 const navigation = {
   categories: [
@@ -137,10 +140,11 @@ function classNames(...classes) {
 
 export default function Navbarv2() {
  const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
-
+  let updateCart=false
   const [showSearch, setShowSearch] = useState(false)
     const [showSideCart, setShowSideCart] = useState(false)
     const [sidebarCartItems, setSidebarCart] = useState(sideCartArray)
+    const [subTotal, setSubtotal] = useState(0)
     const handleCloseSearch = () => setShowSearch(false)
     const handleCloseSideCart = () => setShowSideCart(false)
     const handleShowSearch = () => setShowSearch(true)
@@ -148,14 +152,58 @@ export default function Navbarv2() {
     const closeNav = () => setClose(true)
     const [open, setOpen] = useState(false)
 
+
     const handleShowSideCart = () => {
-    //getItemsSidebarCart()
+
        console.log("SIDECART ITEMS",sidebarCartItems)
        setShowSideCart(true)
-
+       setSubtotal(100)
      }    
-    
-  
+    const deleteFromSideCart = (product) => {
+       updateCart=true
+      const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
+
+        console.log("ID A ELIMINAR",product)
+
+        const newSideCart = sideCartArray.filter((products) => products.id !== product.id)
+        
+        localStorage.setItem('sideCart', JSON.stringify(newSideCart))
+        const newCart = JSON.parse(localStorage.getItem("sideCart"))
+        setSidebarCart(newCart)
+        console.log("NEW CART",sidebarCartItems)
+      }    
+      const onItemHover = {
+        rest: {
+          color: "grey",
+          x: 0,
+          transition: {
+            duration: 2,
+            type: "tween",
+            ease: "easeIn"
+          }
+        },
+        hover: {
+          color: "blue",
+          x: 30,
+          transition: {
+            duration: 0.4,
+            type: "tween",
+            ease: "easeOut"
+          }
+        }
+      };
+      const showTrash = {
+        rest: { opacity: 0, ease: "easeOut", duration: 0.2, type: "tween" },
+        hover: {
+          opacity: 1,
+          transition: {
+            duration: 0.4,
+            type: "tween",
+            ease: "easeIn"
+          }
+        }
+      };
+
    return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -494,10 +542,13 @@ export default function Navbarv2() {
           <Offcanvas.Title className=" ">Tu Pedido</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
+        <div className=' h-[70%] overflow-y-auto'>
        {sideCartArray.map((product) => (
-          <div 
+         
+          <motion.div 
+          initial="rest" whileHover="hover" animate="rest"
           className=' mb-4 pt-2 hover:shadow-lg rounded-md shadow-md'
-          key={product.name}
+          key={product.id}
           > 
           <div className='flex'>
             <div>
@@ -515,14 +566,31 @@ export default function Navbarv2() {
            </p>
            </div>
             </div>
-            <div className='fixed right-[40px]'>
-              close
-            </div>
+            <motion.div 
+            variants={showTrash}
+            className=' ml-[170px]'>
+            <button onClick={() => deleteFromSideCart(product)}>
+            <TrashIcon
+                      className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                      aria-hidden="true"
+                    />
+                    </button>
+            </motion.div>
             </div>
 
-              </div>
+              </motion.div>
 
         ))}  
+            </div>
+            <div>
+            <div className='mt-8 mb-6 font-bold text-lg'>  
+              Subtotal: ${subTotal} 
+            </div>
+            <button class="w-full shadow-lg justify-center bg-indigo-600 rounded-[5px] pl-14 pr-14 pt-[12px] pb-[12px] text-white">
+              Finalizar Compra
+            </button>
+            </div>
+
         </Offcanvas.Body>
       </Offcanvas>
     </div>
