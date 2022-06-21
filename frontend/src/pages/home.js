@@ -3,7 +3,9 @@ import Carousel from "react-bootstrap/Carousel"
 import Categories from '../components/categories'
 import ProductList from '../components/productList'
 import PromoProduct from '../components/promoProduct'
+import { supabase } from '../config/config'
 
+console.log("SUPABASE CONECTION")
 const CarouselHome = () =>{
 
       const imgSlide_1 = "slider_1.png"

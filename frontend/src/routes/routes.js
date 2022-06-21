@@ -5,6 +5,7 @@ import HomePage from "../pages/home";
 import ContactPage from "../pages/contact";
 import AboutPage from "../pages/about";
 import StorePage from '../pages/store';
+import AccountPage from '../pages/account';
 
 const RoutesApp = () => (
     <Routes>
@@ -13,6 +14,7 @@ const RoutesApp = () => (
         <Route exact path='/store' element={<StorePage />} />
         <Route exact path='/about' element={<AboutPage />} /> 
         <Route exact path='/contact' element={<ContactPage />} />
+        <Route exact path='/account' element={<AccountPage />} />
 
         <Route element={<Page404 />} />
     </Routes>
