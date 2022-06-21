@@ -1,5 +1,5 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon,TrashIcon } from '@heroicons/react/outline'
 import Offcanvas from 'react-bootstrap/Offcanvas'
@@ -139,12 +139,35 @@ function classNames(...classes) {
 }
 
 export default function Navbarv2() {
- const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
-  let updateCart=false
+  let subtotal = 0
+  let GetsubTotal
+  const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
+
+  if(localStorage.getItem("subtotalCart")){
+
+     GetsubTotal =  JSON.parse(localStorage.getItem("subtotalCart")) 
+    console.log("GET SUB",GetsubTotal)
+
+  }
+else{
+  localStorage.setItem("subtotalCart", JSON.stringify({"subtotal":0}))
+   GetsubTotal =  JSON.parse(localStorage.getItem("subtotalCart")) 
+  console.log("GET SUB",GetsubTotal)
+}
+  useEffect(() => {
+  getSideCart()
+  
+  });
+ const getSideCart = () =>{
+
+
+}
+ let updateCart=false
   const [showSearch, setShowSearch] = useState(false)
+  const [itemsTotalSideCart, setItemsTotalSideCart] = useState(0)
     const [showSideCart, setShowSideCart] = useState(false)
     const [sidebarCartItems, setSidebarCart] = useState(sideCartArray)
-    const [subTotal, setSubtotal] = useState(0)
+    const [subTotal, setSubtotal] = useState(GetsubTotal.subtotal)
     const handleCloseSearch = () => setShowSearch(false)
     const handleCloseSideCart = () => setShowSideCart(false)
     const handleShowSearch = () => setShowSearch(true)
@@ -152,17 +175,29 @@ export default function Navbarv2() {
     const closeNav = () => setClose(true)
     const [open, setOpen] = useState(false)
 
+  
+
+const getTotalItems = () =>
+{
+  const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
+  setItemsTotalSideCart(sideCartArray.length)
+  console.log("TOTAL ITMES", itemsTotalSideCart)
+}
 
     const handleShowSideCart = () => {
 
-       console.log("SIDECART ITEMS",sidebarCartItems)
+       const subtotalCart = sideCartArray.map(product => product.price).reduce((prev, curr) => prev + curr, 0);
+       const subtotal = JSON.parse(localStorage.getItem("subtotalCart"))
+       
+       console.log("SUBTOTAL",subtotal)
        setShowSideCart(true)
-       setSubtotal(100)
-     }    
-    const deleteFromSideCart = (product) => {
+       
+      } 
+    
+    const deleteFromSideCart = (product) => {       
        updateCart=true
-      const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
-
+       const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
+      
         console.log("ID A ELIMINAR",product)
 
         const newSideCart = sideCartArray.filter((products) => products.id !== product.id)
@@ -171,27 +206,17 @@ export default function Navbarv2() {
         const newCart = JSON.parse(localStorage.getItem("sideCart"))
         setSidebarCart(newCart)
         console.log("NEW CART",sidebarCartItems)
+        updateSubtotal(product.price)
       }    
-      const onItemHover = {
-        rest: {
-          color: "grey",
-          x: 0,
-          transition: {
-            duration: 2,
-            type: "tween",
-            ease: "easeIn"
-          }
-        },
-        hover: {
-          color: "blue",
-          x: 30,
-          transition: {
-            duration: 0.4,
-            type: "tween",
-            ease: "easeOut"
-          }
-        }
-      };
+  const updateSubtotal = (restPrice) =>{
+   console.log("SUBTOTAL EN UPDATE SUBTOTAL",restPrice)
+   
+    const subtotal = JSON.parse(localStorage.getItem("subtotalCart"))
+    const subtotalUpdate = subtotal.subtotal - restPrice
+     console.log("SUBTOTAL RESTADO",subtotalUpdate)
+    localStorage.setItem('subtotalCart', JSON.stringify({"subtotal":subtotalUpdate}))
+
+  }
       const showTrash = {
         rest: { opacity: 0, ease: "easeOut", duration: 0.2, type: "tween" },
         hover: {
@@ -205,7 +230,7 @@ export default function Navbarv2() {
       };
 
    return (
-    <div className="bg-white">
+    <div className="bg-white fixed w-full z-50">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -527,7 +552,7 @@ export default function Navbarv2() {
                       className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{itemsTotalSideCart}</span>
                     <span className="sr-only">items in cart, view bag</span>
                   </button>
                 </div>
@@ -584,7 +609,7 @@ export default function Navbarv2() {
             </div>
             <div>
             <div className='mt-8 mb-6 font-bold text-lg'>  
-              Subtotal: ${subTotal} 
+              Subtotal: ${GetsubTotal.subtotal} 
             </div>
             <button class="w-full shadow-lg justify-center bg-indigo-600 rounded-[5px] pl-14 pr-14 pt-[12px] pb-[12px] text-white">
               Finalizar Compra

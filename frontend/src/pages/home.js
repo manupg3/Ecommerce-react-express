@@ -43,7 +43,7 @@ const CarouselHome = () =>{
 
 function HomePage() {
   return (
-    <div>
+    <div className='pt-[104px]'>
         <CarouselHome/>
         <div className='bg-white pl-8 pr-8'>
         <Categories/> 

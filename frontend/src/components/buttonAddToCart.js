@@ -16,12 +16,18 @@ const ButtonAddToCart = ({product, classStyles})=> {
           let arrayProductsAdd = JSON.parse(localStorage.getItem('sideCart'));
 
           const arraySumRepeat = arrayProductsAdd.map(products =>{
+
               console.log(products.id, product.id)
             if(products.id === product.id){
                repetido = true
-              console.log("ENTRO")
-              products.price = Number(products.price) + Number(product.price)
-             console.log("PRODUCT PRICE",Number(product.price))
+               console.log("ENTRO ID IGUAL")
+               products.price = Number(products.price) + Number(product.price)
+               console.log("PRODUCT PRICE SUMADO", products.price) 
+               const subtotal = JSON.parse(localStorage.getItem('subtotalCart'))
+               const newSubtotal = subtotal.subtotal + Number(product.price)
+               console.log("SUBOTAL SIN SUMAR MISMOS", newSubtotal)
+             localStorage.setItem('subtotalCart',JSON.stringify({"subtotal":newSubtotal}))
+
             }
             return products
         })
@@ -49,6 +55,7 @@ const ButtonAddToCart = ({product, classStyles})=> {
     },{
       subtotal:0
     })
+    console.log("SUBTOTAL CART",subtotalCart)
     localStorage.setItem('subtotalCart', JSON.stringify(subtotalCart))
 
   }
