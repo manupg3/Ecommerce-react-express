@@ -5,14 +5,16 @@ import Navbarv2 from './components/navbarv2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router} from 'react-router-dom';
 import RoutesApp from './routes/routes';
-
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <div className="App">
   <Router>
+
   <Navbarv2/>
-    <RoutesApp />
+     <RoutesApp />
+
   </Router>
     </div>
   );

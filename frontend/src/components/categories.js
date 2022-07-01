@@ -4,6 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const callouts = [
     {
+      id: 1,
       name: 'Desk and Office',
       description: 'Work from home accessories',
       imageSrc: 'https://classic.protienda.com.ar/wp-content/uploads/2018/08/8.0.1-300x300.jpg',
@@ -11,13 +12,15 @@ const callouts = [
       href: '#',
     },
     {
+      id: 2,
       name: 'Self-Improvement',
       description: 'Journals and note-taking',
       imageSrc: 'https://classic.protienda.com.ar/wp-content/uploads/2018/08/5.jpg',
       imageAlt: 'Wood table with porcelain mug, leather journal, brass pen, leather key ring, and a houseplant.',
       href: '#',
     },
-    {
+    { 
+        id:3,
         name: 'Self-Improvement',
         description: 'Journals and note-taking',
         imageSrc: 'https://classic.protienda.com.ar/wp-content/uploads/2018/08/11.jpg',
@@ -37,7 +40,7 @@ const callouts = [
   
             <div className="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6">
               {callouts.map((callout) => (
-                <div key={callout.name} className="group relative">
+                <div key={callout.id} className="group relative">
                   <div className="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
                     <img
                       src={callout.imageSrc}

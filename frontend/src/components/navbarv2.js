@@ -8,7 +8,11 @@ import Form from 'react-bootstrap/Form'
 import { LinkContainer } from 'react-router-bootstrap'
 import Nav from 'react-bootstrap/Nav'
 import { motion } from "framer-motion";
-
+import { supabase } from '../config/config'
+import { useProfile } from '../customHook/useProfile'
+import { getUserProfile } from '../services/auth'
+import { useLocation } from 'react-router-dom'
+import { logout } from '../services/auth'
 
 
 const navigation = {
@@ -138,11 +142,57 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbarv2() {
+export default function Navbarv2(props) {
+  const [LogIn, SetIsLogIn] = useState("")
+
+  let usernameFromSessionStorage = sessionStorage.getItem("UserSessionName")
+
+  let IsLogedIn = sessionStorage.getItem("IsLogedIn")
+  
+  console.log("USERNAME EN NAVBAR DE SESSION STORAGE",usernameFromSessionStorage)
+  let usern = "Mi Cuenta"
+  let logedIn = false
+  const location = useLocation();
+  
+  const [usernameE, setusernameE] = useState(null)
+   
+  console.log("LOCATION STATE",location.state)
+
+  if(location.state !=null){
+    usern = location.state.email
+    logedIn = location.state.logedIn
+    sessionStorage.setItem("UserSessionName", usern)
+    sessionStorage.setItem("IsLogedIn", logedIn)
+
+    console.log(usern)
+    console.log(logedIn)
+  }
+if(usernameFromSessionStorage){
+  usern = usernameFromSessionStorage
+}
+if(IsLogedIn){
+  logedIn = IsLogedIn
+}
+function LogOut (props) {
+   
+  console.log("LOGED IN EN LOGOUT", props.logedIn)
+  if(props.logedIn == "true")
+{
+  
+  return <button onClick={signOut}>LOG OUT</button>
+
+}
+
+
+}
+
+
   let subtotal = 0
   let GetsubTotal
-  const sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
-
+  let sideCartArray=[]
+  if(localStorage.getItem("sideCart")){
+   sideCartArray = JSON.parse(localStorage.getItem("sideCart"))
+  }
   if(localStorage.getItem("subtotalCart")){
 
      GetsubTotal =  JSON.parse(localStorage.getItem("subtotalCart")) 
@@ -193,6 +243,12 @@ const getTotalItems = () =>
        setShowSideCart(true)
        
       } 
+      const signOut = async() =>
+      {
+        
+        await logout()
+
+      }
     
     const deleteFromSideCart = (product) => {       
        updateCart=true
@@ -511,13 +567,13 @@ const getTotalItems = () =>
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  <LinkContainer to="/account">
-                    <Nav.Link  class="-m-2 p-2 block font-medium text-gray-900">Mi Cuenta</Nav.Link>
+                
+                   <LinkContainer to="/account">
+                    <Nav.Link  class="-m-2 p-2 block font-medium text-gray-900">{usern} </Nav.Link>
                     </LinkContainer>
-           
+                    <LogOut logedIn={logedIn}/>
+                
                 </div>
-
-          
 
                 {/* Search */}
                 <div className="flex lg:ml-6">

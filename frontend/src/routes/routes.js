@@ -6,9 +6,12 @@ import ContactPage from "../pages/contact";
 import AboutPage from "../pages/about";
 import StorePage from '../pages/store';
 import AccountPage from '../pages/account';
+import { AuthProvider } from '../context/AuthContext';
 
 const RoutesApp = () => (
-    <Routes>
+    <AuthProvider>
+
+ <Routes>
 
         <Route exact path='/' element={<HomePage />} />
         <Route exact path='/store' element={<StorePage />} />
@@ -18,6 +21,8 @@ const RoutesApp = () => (
 
         <Route element={<Page404 />} />
     </Routes>
+    </AuthProvider>
+
 );
 
 export default RoutesApp;

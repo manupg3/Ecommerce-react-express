@@ -4,6 +4,8 @@ import Categories from '../components/categories'
 import ProductList from '../components/productList'
 import PromoProduct from '../components/promoProduct'
 import { supabase } from '../config/config'
+import { logout } from '../services/auth'
+import { useLocation } from "react-router-dom";
 
 console.log("SUPABASE CONECTION")
 const CarouselHome = () =>{
@@ -43,9 +45,16 @@ const CarouselHome = () =>{
 }
 
 
-function HomePage() {
+function HomePage(props) {
+  const location = useLocation();
+
+  const signOut = async() =>
+  {
+   await logout()
+  }
   return (
     <div className='pt-[104px]'>
+
         <CarouselHome/>
         <div className='bg-white pl-8 pr-8'>
         <Categories/> 

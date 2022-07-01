@@ -2,11 +2,13 @@
 import { useState } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
+import ButtonAddToCart from './buttonAddToCart'
 
 const product = {
-  name: 'Basic Tee 6-Pack',
+  id: 11,
+  name: 'Pronmo Product',
   price: '192',
-  href: '#',
+
   breadcrumbs: [
     { id: 1, name: 'Men', href: '#' },
     { id: 2, name: 'Clothing', href: '#' },
@@ -62,6 +64,7 @@ function classNames(...classes) {
 }
 
 export default function PromoProduct() {
+  const classStyles = "mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
@@ -166,7 +169,7 @@ export default function PromoProduct() {
               </div>
             </div>
 
-            <form className="mt-10">
+            <div className="mt-10">
               {/* Colors */}
               <div>
                 <h3 className="text-left text-sm text-gray-900 font-medium">Color</h3>
@@ -178,6 +181,7 @@ export default function PromoProduct() {
                       <RadioGroup.Option
                         key={color.name}
                         value={color}
+                      
                         className={({ active, checked }) =>
                           classNames(
                             color.selectedClass,
@@ -264,14 +268,10 @@ export default function PromoProduct() {
                   </div>
                 </RadioGroup>
               </div>
+      
+              <ButtonAddToCart product={product} selectedColor={selectedColor.name} selectedSize={selectedSize.name} classStyles={classStyles}/>
 
-              <button
-                type="submit"
-                className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Add to bag
-              </button>
-            </form>
+            </div>
           </div>
 
           <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">

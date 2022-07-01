@@ -2,19 +2,30 @@ import React, { useEffect } from 'react'
 import { motion } from "framer-motion"
 import { faL } from '@fortawesome/free-solid-svg-icons'
 
-const ButtonAddToCart = ({product, classStyles})=> {
+const ButtonAddToCart = ({product, classStyles,selectedColor,selectedSize})=> {
   let sideCartArray = []
   let CART ={
       product:[]
   }
-    const handleAddToCart = () =>{
+  console.log("PRODUCT STRUCTURE",product)
+
+   let variableProduct={
+     id:"",
+     name:"",
+     price:"",
+     selectedColor:"",
+     selectedSize:"",
+     mainImage:""
+     
+    }
+
+    const handleAddToCart = () =>{  
+         
         sideCartArray.push(JSON.parse(localStorage.getItem('sideCart')))
-      
+           
         if(localStorage.getItem('sideCart')){
           let repetido = false
-
           let arrayProductsAdd = JSON.parse(localStorage.getItem('sideCart'));
-
           const arraySumRepeat = arrayProductsAdd.map(products =>{
 
               console.log(products.id, product.id)
@@ -36,17 +47,34 @@ const ButtonAddToCart = ({product, classStyles})=> {
          
         }
        else{
-         CART.product.push(product)
-         localStorage.setItem('sideCart',JSON.stringify(CART.product))
-       }
+          console.log("PRODUCT STRUCTURE",product)
+          CART.product.push(product)
+          localStorage.setItem('sideCart',JSON.stringify(CART.product))
+       
+        }
   }
 
   const addSumRepeat = (arraySumRepeat) =>{
     localStorage.setItem('sideCart', JSON.stringify(arraySumRepeat))
  }
   const addProduct = (product, arrayProductsAdd) =>{
+    if(selectedColor){
+      variableProduct.id = product.id
+      variableProduct.name = product.name
+      variableProduct.price = product.price
+      variableProduct.selectedColor = selectedColor
+      variableProduct.selectedSize = selectedSize
+      variableProduct.mainImage = product.images[0].src
 
-    arrayProductsAdd.push(product)
+      arrayProductsAdd.push(variableProduct)
+
+    }
+    else{  
+       
+        arrayProductsAdd.push(product)
+    
+       }
+    
     localStorage.setItem('sideCart', JSON.stringify(arrayProductsAdd))
     const subtotalCart = arrayProductsAdd.reduce((acc,product) =>{
       const {price} = product
@@ -57,7 +85,6 @@ const ButtonAddToCart = ({product, classStyles})=> {
     })
     console.log("SUBTOTAL CART",subtotalCart)
     localStorage.setItem('subtotalCart', JSON.stringify(subtotalCart))
-
   }
 
     return (
